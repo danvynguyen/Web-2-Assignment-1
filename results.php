@@ -1,5 +1,5 @@
 <?php 
-//insert php code here
+require_once('includes/config.inc.php');
 ?>
 
 <!DOCTYPE html>
@@ -21,12 +21,13 @@
         <h3>Artist</h3>
         <h3>Year</h3>
         <h3>Genre</h3>
-        <h3>Popularity</h3>
+        <h3>Popularity</h3><br>
         <button type="button">Show All</button>
-        <button type="button">Add to Favorites</button>
-        <button type="button">View</button>
+        <button type="button"><a href="favorites.php">Add to Favorites</a></button>
+        <button type="button"><a href='"single-song.php?id=".$row['song_id']."'>View</a></button>
     </section>
-    
+
+
 </main>
 <footer>
     

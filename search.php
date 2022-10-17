@@ -1,5 +1,5 @@
 <?php 
-//insert php code here
+require_once('includes/config.inc.php');
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
 </header>
 <main>
     <section class="song-search">
-        <form action="result.php" method="get">
+        <form action="results.php" method="post">
             <h1>Basic Song Search</h1>
             <label for="title">Title:</label>
             <input type="text" name="title" size=50/><br>
