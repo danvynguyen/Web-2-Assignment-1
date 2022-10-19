@@ -1,6 +1,7 @@
 <?php 
 //insert php code here
 require_once('includes/config.inc.php');
+require_once('includes/helpers.inc.php');
 
 try {
    $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
@@ -13,10 +14,27 @@ catch (PDOException $e) {
    die( $e->getMessage() );
 } 
 
+//gets all songs from favorites table
 function getFavorites($pdo) {
    $sql = "SELECT * FROM favorites";
    $result = $pdo->query($sql);
    return $result->fetchAll(PDO::FETCH_ASSOC); 
+}
+
+// removes a song from favorites list
+function removeFavorite($song_id,$pdo) {
+    $sql = "DELETE * FROM favorites WHERE song_id=?";
+    $statement = $pdo->prepare($sql); 
+    $statement->bindValue(1, $song_id); 
+    $statement->execute(); 
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// removes all songs from favorites list
+function removeAllFavorites($pdo) {
+    $sql = "DELETE * FROM favorites";
+   $result = $pdo->query($sql);
+   return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
 ?>
@@ -32,10 +50,15 @@ function getFavorites($pdo) {
 <body>
 <header>
     <h1 class="center">COMP 3512 Assign1</h1>
+    <nav class="center">
+        <a href="home.php">Home</a> |
+        <a href="search.php">Search</a> |
+        <a href="favorites.php">Favorites</a> |
+    </nav>
 </header>
 <main>
     <section class="song-results">
-        <h1>Search Results</h1>
+        <h1>Favorites</h1>
         <table>
             <tr>
                 <th>Title</th>
@@ -66,9 +89,6 @@ function getFavorites($pdo) {
                 }
             ?>
         </table>
-        
-        
-        
         
         <button type="button">Remove All</button>
         <button type="button">Remove</button>

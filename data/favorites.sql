@@ -8,3 +8,5 @@ CREATE TABLE favorites (
    genre_name TEXT,     
    popularity INTEGER
 );
+
+INSERT INTO favorites (song_id, title, artist_name, year, genre_name, popularity) VALUES (1000, 'Never Gonna Give You Up', 'Rick Astley', 1987, 'pop', 100);

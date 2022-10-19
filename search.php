@@ -1,5 +1,9 @@
 <?php 
 require_once('includes/config.inc.php');
+require_once('includes/helpers.inc.php');
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +17,11 @@ require_once('includes/config.inc.php');
 <body>
 <header>
     <h1 class="center">COMP 3512 Assign1</h1>
+    <nav class="center">
+        <a href="home.php">Home</a> |
+        <a href="search.php">Search</a> |
+        <a href="favorites.php">Favorites</a> |
+    </nav>
 </header>
 <main>
     <section class="song-search">
@@ -26,18 +35,18 @@ require_once('includes/config.inc.php');
             <input type="text" name="genre" size=50/><br>
             <input type="radio" id="year" name="year" value="year">
             <label for="year">Year</label><br>
-            <input type="radio" id="less-year" name="year-amt" value="less-year">
+            <input type="radio" id="less-year" name="less_year" value="less_year">
             <label for="year">Less</label>
             <input type="text" name="max-year"/><br>
-            <input type="radio" id="greater-year" name="year-amt" value="greater-year">
+            <input type="radio" id="greater-year" name="greater_year" value="greater_year">
             <label for="year">Greater</label>
             <input type="text" name="min-year"/><br>
             <input type="radio" id="popularity" name="popularity" value="popularity">
             <label for="year">Popularity</label><br>
-            <input type="radio" id="less-popular" name="pop-amt" value="less-popular">
+            <input type="radio" id="less-popular" name="less_popular" value="less_popular">
             <label for="year">Less</label>
             <input type="text" name="max-pop"/><br>
-            <input type="radio" id="greater-popular" name="pop-amt" value="greater-popular">
+            <input type="radio" id="greater-popular" name="more_popular" value="more_popular">
             <label for="year">Greater</label>
             <input type="text" name="min-pop"/><br>
             <input type="submit" value="Search" />

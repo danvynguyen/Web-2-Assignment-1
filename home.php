@@ -3,13 +3,6 @@ require_once('includes/config.inc.php');
 try { 
     $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS); 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-
-    /*$sql="SELECT title,artist_name,type_name,year,duration FROM songs INNER JOIN artists ON songs.artist_id=artists.artist_id INNER JOIN types ON artists.artist_type_id=types.type_id";
-    $result = $pdo->query($sql);
-    $data = $result->fetchAll(PDO::FETCH_ASSOC); 
-    foreach ($data as $row) { 
-        echo $row['title'] . " - " . $row['artist_name'] . "<br/>"; 
-    }*/
     
     $topGenres = getTopGenres($pdo);
     
@@ -150,6 +143,11 @@ function outputStudying($studying) {
 <body>
 <header>
     <h1 class="center">COMP 3512 Assign1</h1>
+    <nav class="center">
+        <a href="home.php">Home</a> |
+        <a href="search.php">Search</a> |
+        <a href="favorites.php">Favorites</a> |
+    </nav>
 </header>
 <main>
     <?php 

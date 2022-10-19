@@ -35,6 +35,11 @@ function getSongs($pdo, $id){
 <body>
 <header>
     <h1 class="center">COMP 3512 Assign1</h1>
+    <nav class="center">
+        <a href="home.php">Home</a> |
+        <a href="search.php">Search</a> |
+        <a href="favorites.php">Favorites</a> |
+    </nav>
 </header>
 <main>
     <h1 class="center">Song Information</h1>
