@@ -7,7 +7,9 @@ try {
    $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-   $favorites = getFavorites($pdo);   
+    $favorites = getFavorites($pdo);
+    $result=$pdo->createFavorites($pdo);
+    $results = getFavorites($pdo);
    $pdo = null;
 }
 catch (PDOException $e) {
@@ -33,8 +35,30 @@ function removeFavorite($song_id,$pdo) {
 // removes all songs from favorites list
 function removeAllFavorites($pdo) {
     $sql = "DELETE * FROM favorites";
-   $result = $pdo->query($sql);
-   return $result->fetchAll(PDO::FETCH_ASSOC);
+    $result = $pdo->query($sql);
+    return $result->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function createFavorites($pdo){
+    $sql = "DROP TABLE IF EXISTS favorites;
+    CREATE TABLE favorites (
+    song_id INTEGER PRIMARY KEY, 
+    title TEXT, 
+    artist_name TEXT,  
+    year INTEGER,
+    genre_name TEXT,     
+    popularity INTEGER
+);
+
+INSERT INTO favorites (song_id, title, artist_name, year, genre_name, popularity) VALUES (1000, 'Never Gonna Give You Up', 'Rick Astley', 1987, 'pop', 100);
+
+SELECT * FROM favorites";
+
+    $result = $pdo->query($sql);
+    //return $result->fetchAll(PDO::FETCH_ASSOC);
+    while ($row=$result->fetch()){
+        echo $row['title'];
+    }
 }
 
 ?>
@@ -68,7 +92,7 @@ function removeAllFavorites($pdo) {
                 <th>Popularity</th>
             </tr>
             <?php
-                foreach( $favorites as $f ) {
+                foreach( $results as $f ) {
                     echo '<tr>';
                     echo '<td>';
                     echo $f['title'];

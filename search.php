@@ -1,8 +1,18 @@
 <?php 
-require_once('includes/config.inc.php');
-require_once('includes/helpers.inc.php');
+require_once 'includes/config.inc.php';
+require_once 'includes/helpers.inc.php';
 
-
+try {
+    $conn = DatabaseHelper::createConnection(array(DBCONNSTRING, DBUSER, DBPASS));
+    $gateway = new somethingStupid($conn);
+    $song=$gateway->getAll();
+    $artists=$gateway->callArtist();
+    $genres=$gateway->callGenre();
+    $find=$gateway->search(1002,"song_id");
+}
+catch (Exception $e){
+    die($e->getMessage());
+}
 
 ?>
 
@@ -27,18 +37,35 @@ require_once('includes/helpers.inc.php');
     <section class="song-search">
         <form action="results.php" method="post">
             <h1>Basic Song Search</h1>
+            <input type="radio" name="anything" value="title">
             <label for="title">Title:</label>
             <input type="text" name="title" size=50/><br>
+            <input type="radio" name="anything" value="artist_name">
             <label for="artist">Artist:</label>
-            <input type="text" name="artist" size=50/><br>
+            <select name="artist">
+                <option></option>
+            <?php 
+                foreach ($artists as $a) {
+                    echo '<option value="'.$a['artist_name'].'">'.$a['artist_name'].'</option>';
+                }
+            ?>
+            </select><br>
+            <input type="radio" name="anything" value="genre_name">
             <label for="genre">Genre:</label>
-            <input type="text" name="genre" size=50/><br>
-            <input type="radio" id="year" name="year" value="year">
+            <select name="genre">
+                <option></option>
+            <?php
+                foreach ($genres as $g) {
+                    echo '<option value="'.$g['genre_name'].'">'.$g['genre_name'].'</option>';
+                }
+            ?>
+            </select><br>
+            <input type="radio" id="year" name="year" value="checked">
             <label for="year">Year</label><br>
-            <input type="radio" id="less-year" name="less_year" value="less_year">
+            <input type="radio" id="less-year" name="anything" value="less_year">
             <label for="year">Less</label>
             <input type="text" name="max-year"/><br>
-            <input type="radio" id="greater-year" name="greater_year" value="greater_year">
+            <input type="radio" id="greater-year" name="anything" value="greater_year">
             <label for="year">Greater</label>
             <input type="text" name="min-year"/><br>
             <input type="radio" id="popularity" name="popularity" value="popularity">

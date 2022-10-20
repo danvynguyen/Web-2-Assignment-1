@@ -42,9 +42,9 @@ function getSongs($pdo, $id){
     </nav>
 </header>
 <main>
-    <h1 class="center">Song Information</h1>
     <!--<p class="center">title, artist name, artist type, genre, year, duration</p>-->
     <?php 
+    echo '<h1 class="center">'.$songs['title'].' by '.$songs['artist_name'].'</h1>';
     echo '<p class="center">'.$songs['title'].', '.$songs['artist_name'].' ('.$songs['type_name'].'), '.$songs['year'].', '.$songs['duration'].' seconds'.'</p>'; 
     
     ?>
@@ -52,14 +52,30 @@ function getSongs($pdo, $id){
     <section class="song-data">
         <p>Analysis Data:</p>
             <ul>
-                <li>bpm: <?php echo $songs['bpm'];?></li>
-                <li>energy: <?php echo $songs['energy'];?></li>
-                <li>danceability: <?php echo $songs['danceability'];?></li>
-                <li>liveness: <?php echo $songs['liveness'];?></li>
-                <li>valence: <?php echo $songs['valence'];?></li>
-                <li>acoustics: <?php echo $songs['acousticness'];?></li>
-                <li>speechiness: <?php echo $songs['speechiness'];?></li>
-                <li>popularity: <?php echo $songs['popularity'];?></li>
+                <li>BPM: 
+                    <?php echo $songs['bpm'];?>
+                </li>
+                <li>Energy:    
+                    <?php echo '<progress value="'.$songs['energy'].'" max="100"></progress>';?>
+                </li>
+                <li>Danceability: 
+                    <?php echo '<progress value="'.$songs['danceability'].'" max="100"></progress>';?>
+                </li>
+                <li>Liveness: 
+                    <?php echo '<progress value="'.$songs['liveness'].'" max="100"></progress>';?>
+                </li>
+                <li>Valence: 
+                    <?php echo '<progress value="'.$songs['valence'].'" max="100"></progress>';?>
+                </li>
+                <li>Acoustics:
+                    <?php echo '<progress value="'.$songs['acousticness'].'" max="100"></progress>';?>
+                </li>
+                <li>Speechiness: 
+                    <?php echo '<progress value="'.$songs['speechiness'].'" max="100"></progress>';?>
+                </li>
+                <li>Popularity: 
+                    <?php echo '<progress value="'.$songs['popularity'].'" max="100"></progress>';?>
+                </li>
             </ul>
     </section>
     

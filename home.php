@@ -26,7 +26,7 @@ catch (PDOException $e) {
     die( $e->getMessage() ); 
 } 
 
-// outputs top genres
+//gets and outputs top genres
 function getTopGenres($pdo){
     $sql="SELECT genre_name, COUNT(*) FROM genres INNER JOIN songs ON genres.genre_id=songs.genre_id GROUP BY genre_name ORDER BY COUNT(*) DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -34,12 +34,16 @@ function getTopGenres($pdo){
 }
 
 function outputTopGenres($topGenres) {
-    foreach ($topGenres as $row) { 
-        echo $row['genre_name'] . "<br/>"; 
+    echo "<ul>";
+    foreach ($topGenres as $row) {
+        echo "<li>";
+        echo $row['genre_name'] . "<br/>";
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs top artists
+//gets and outputs top artists
 function getTopArtists($pdo){
     $sql="SELECT artist_name, COUNT(*) FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id GROUP BY artist_name ORDER BY COUNT(*) DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -47,12 +51,16 @@ function getTopArtists($pdo){
 }
 
 function outputTopArtists($topArtists) {
+    echo "<ul>";
     foreach ($topArtists as $row) { 
-        echo $row['artist_name'] . "<br/>"; 
+        echo "<li>";
+        echo $row['artist_name'] . "<br/>";
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs most popular songs
+//gets and outputs most popular songs
 function getMostPopular($pdo){
     $sql="SELECT song_id, title, artist_name, popularity FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id GROUP BY title ORDER BY popularity DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -60,12 +68,16 @@ function getMostPopular($pdo){
 }
 
 function outputMostPopular($mostPopular) {
+    echo "<ul>";
     foreach ($mostPopular as $row) { 
-        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>';  
+        echo "<li>";
+        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>'; 
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs one hit wonders
+//gets and outputs one hit wonders
 function getOneHitWonders($pdo){
     $sql="SELECT song_id, title, artist_name, COUNT(*), popularity FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id GROUP BY artist_name HAVING COUNT(*)=1 ORDER BY popularity DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -73,12 +85,16 @@ function getOneHitWonders($pdo){
 }
 
 function outputOneHitWonders($oneHitWonders) {
-    foreach ($oneHitWonders as $row) { 
-        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>'; 
+    echo "<ul>";
+    foreach ($oneHitWonders as $row) {
+        echo "<li>";
+        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>';
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs longest acoustic songs
+//gets and outputs longest acoustic songs
 function getLongestAcoustic($pdo){
     $sql="SELECT * FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id WHERE acousticness > 40 GROUP BY title ORDER BY duration DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -86,12 +102,16 @@ function getLongestAcoustic($pdo){
 }
 
 function outputLongestAcoustic($longestAcoustic) {
-    foreach ($longestAcoustic as $row) { 
-        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>'; 
+    echo "<ul>";
+    foreach ($longestAcoustic as $row) {
+        echo "<li>";
+        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>';
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs at the club songs
+//gets and outputs at the club songs
 function getClub($pdo){
     $sql="SELECT song_id, title, artist_name, danceability*1.6+energy*1.4 as sustainability FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id WHERE danceability > 80 GROUP BY title ORDER BY sustainability DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -99,12 +119,16 @@ function getClub($pdo){
 }
 
 function outputClub($club) {
-    foreach ($club as $row) { 
-        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>'; 
+    echo "<ul>";
+    foreach ($club as $row) {
+        echo "<li>";
+        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>';
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs running songs
+//gets and outputs running songs
 function getRunning($pdo){
     $sql="SELECT song_id, title, artist_name, energy*1.3+valence*1.6 as sustainability FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id WHERE bpm>120 AND bpm<125 GROUP BY title ORDER BY sustainability DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -112,12 +136,16 @@ function getRunning($pdo){
 }
 
 function outputRunning($running) {
-    foreach ($running as $row) { 
-        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>'; 
+    echo "<ul>";
+    foreach ($running as $row) {
+        echo "<li>";
+        echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>';
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
-//outputs studying songs
+//gets and outputs studying songs
 function getStudying($pdo){
     $sql="SELECT song_id, title, artist_name, (acousticness*0.8)+(100-speechiness)+(100-valence) as sustainability FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id WHERE bpm>100 AND bpm<115 AND speechiness>1 AND speechiness<20 GROUP BY title ORDER BY sustainability DESC LIMIT 10";
     $result = $pdo->query($sql);
@@ -125,9 +153,13 @@ function getStudying($pdo){
 }
 
 function outputStudying($studying) {
+    echo "<ul>";
     foreach ($studying as $row) { 
+        echo "<li>";
         echo '<a href="single-song.php?song_id='.$row['song_id'].'">'.$row['title'] . ' by ' . $row['artist_name'] . '</a><br/>'; 
+        echo "</li>";
     }
+    echo "</ul>";
 }
 
 ?>

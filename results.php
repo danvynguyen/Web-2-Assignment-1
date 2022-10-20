@@ -3,15 +3,21 @@ require_once('includes/config.inc.php');
 require_once('includes/helpers.inc.php');
 
 try {
-   $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
-   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   /*$pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
+   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);*/
     //insert code here.
-   
-   if (isset($_POST["title"]) && isset($_POST["artist"]) && isset($_POST["less_year"]) && isset($_POST["greater_year"]) && isset($_POST["genre"]) && isset($_POST["less_popular"]) && isset($_POST["more popular"])){
+    $conn = DatabaseHelper::createConnection(array(DBCONNSTRING, DBUSER, DBPASS));
+    $gateway = new somethingStupid($conn);
+    
+    $find=$gateway->search($_POST['artist'],"artist_name");
+    //$find=$gateway->searchYear($_POST['less_year'],"year");
+    
+    
+   /*if (isset($_POST["title"]) && isset($_POST["artist"]) && isset($_POST["less_year"]) && isset($_POST["greater_year"]) && isset($_POST["genre"]) && isset($_POST["less_popular"]) && isset($_POST["more popular"])){
        //$results=findSongs($_POST["title"],$_POST["artist"],$_POST["less_year"],$_POST["greater_year"],$_POST["genre"],$_POST["less_popular"],$_POST["more_popular"]);
        $results=findSongs();
        
-   } 
+   }*/ 
    $pdo = null;
 }
 catch (PDOException $e) {
@@ -34,28 +40,6 @@ catch (PDOException $e) {
         return $statement->fetchAll();  
      
 }*/
-
-function findSongs() {  
-        $sql = "SELECT song_id, title, artist_name, year, genre_name, popularity FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id INNER JOIN genres ON genres.genre_id=songs.genre_id"; 
-        $sql .= " WHERE title LIKE '".$_POST["title"]."'";
-        $sql .= " OR artist_name LIKE '".$_POST["artist"]."'";
-        $sql .= " OR year < '".$_POST["less_year"]."'";
-        $sql .= " OR year > '".$_POST["greater_year"]."'";
-        $sql .= " OR genre_name LIKE '".$_POST["genre"]."'";
-        $sql .= " OR year < '".$_POST["less_popular"]."'";
-        $sql .= " OR year > '".$_POST["more_popular"]."'"; 
-        $result=$pdo->query($sql);
-        return $result->fetchAll();
-     
-}
-
-//function to add song to favorites.
-function addSong($pdo, $title, $artist_name, $year, $genre_name, $popularity) { 
-    $sql = "INSERT INTO favorites (title, artist_name, year, genre_name, popularity) VALUES 
-            (:title,:artist_name,:year,:genre_name,:popularity)"; 
-    $statement = $pdo->prepare($sql); 
-    $statement->execute( array("title"=>$title,"artist_name"=>$artist_name,"year"=>$year,"genre_name"=>$genre_name,"popularity"=>$popularity));
-} 
 
 ?>
 
@@ -86,10 +70,10 @@ function addSong($pdo, $title, $artist_name, $year, $genre_name, $popularity) {
                 <th>Year</th>
                 <th>Genre</th>
                 <th>Popularity</th>
-            </tr>"
+            </tr>
             <?php
-            if (isset($results) && count($results)>0) {
-                foreach( $results as $r ) {
+            if (isset($find) && count($find)>0) {
+                foreach( $find as $r ) {
                     echo '<tr>';
                     echo '<td>';
                     echo $r['title'];
@@ -109,8 +93,11 @@ function addSong($pdo, $title, $artist_name, $year, $genre_name, $popularity) {
                     echo '</tr>';
                 }
             }
+            else if (! empty($_POST['title'])){
+                echo "<p>No results for '".$_POST['title']."' found.</p>";
+            }
             else {
-                echo "<p>No results for '".$_POST["title"]."' found.</p>";
+                echo "<p> No results found. </p>";
             }
                 
             ?>
