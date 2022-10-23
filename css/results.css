@@ -8,4 +8,15 @@ h3 {
 
 a {
     text-decoration: none;
+    color: black;
+}
+
+td {
+    text-align: center;
+}
+
+body {
+  font-family: Roboto, Times, sans-serif;
+    background-image: linear-gradient(purple, black);
+    color: white;
 }

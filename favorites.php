@@ -3,13 +3,15 @@
 require_once('includes/config.inc.php');
 require_once('includes/helpers.inc.php');
 
+session_start();
+
 try {
    $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $favorites = getFavorites($pdo);
-    $result=$pdo->createFavorites($pdo);
-    $results = getFavorites($pdo);
+    //$favorites = getFavorites($pdo);
+    //$result=$pdo->createFavorites($pdo);
+    //$results = getFavorites($pdo);
    $pdo = null;
 }
 catch (PDOException $e) {
@@ -17,7 +19,7 @@ catch (PDOException $e) {
 } 
 
 //gets all songs from favorites table
-function getFavorites($pdo) {
+/*function getFavorites($pdo) {
    $sql = "SELECT * FROM favorites";
    $result = $pdo->query($sql);
    return $result->fetchAll(PDO::FETCH_ASSOC); 
@@ -59,7 +61,7 @@ SELECT * FROM favorites";
     while ($row=$result->fetch()){
         echo $row['title'];
     }
-}
+}*/
 
 ?>
 
@@ -92,7 +94,7 @@ SELECT * FROM favorites";
                 <th>Popularity</th>
             </tr>
             <?php
-                foreach( $results as $f ) {
+                foreach( $_SESSION['favorites'] as $f ) {
                     echo '<tr>';
                     echo '<td>';
                     echo $f['title'];
@@ -107,7 +109,7 @@ SELECT * FROM favorites";
                     echo $f['genre_name'];
                     echo '</td>';
                     echo '<td>';
-                    echo $f['popularity'];
+                    echo '<progress value="'.$f['popularity'].'" max="100"></progress>';
                     echo '</td>';
                     echo '</tr>';
                 }

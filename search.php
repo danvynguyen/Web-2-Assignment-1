@@ -8,7 +8,8 @@ try {
     $song=$gateway->getAll();
     $artists=$gateway->callArtist();
     $genres=$gateway->callGenre();
-    $find=$gateway->search(1002,"song_id");
+    //$songIDs=$gateway->callSongIDs();
+    //$find=$gateway->search(1002,"song_id");
 }
 catch (Exception $e){
     die($e->getMessage());
@@ -37,10 +38,11 @@ catch (Exception $e){
     <section class="song-search">
         <form action="results.php" method="post">
             <h1>Basic Song Search</h1>
-            <input type="radio" name="anything" value="title">
+            <p></p>
+            <input type="radio" name="form" value="title">
             <label for="title">Title:</label>
             <input type="text" name="title" size=50/><br>
-            <input type="radio" name="anything" value="artist_name">
+            <input type="radio" name="form" value="artist_name">
             <label for="artist">Artist:</label>
             <select name="artist">
                 <option></option>
@@ -50,7 +52,7 @@ catch (Exception $e){
                 }
             ?>
             </select><br>
-            <input type="radio" name="anything" value="genre_name">
+            <input type="radio" name="form" value="genre_name">
             <label for="genre">Genre:</label>
             <select name="genre">
                 <option></option>
@@ -60,20 +62,20 @@ catch (Exception $e){
                 }
             ?>
             </select><br>
-            <input type="radio" id="year" name="year" value="checked">
+            <input type="radio" id="year" name="form" value="year">
             <label for="year">Year</label><br>
-            <input type="radio" id="less-year" name="anything" value="less_year">
+            <input type="radio" id="less-year" name="year" value="less">
             <label for="year">Less</label>
             <input type="text" name="max-year"/><br>
-            <input type="radio" id="greater-year" name="anything" value="greater_year">
+            <input type="radio" id="greater-year" name="year" value="greater">
             <label for="year">Greater</label>
             <input type="text" name="min-year"/><br>
-            <input type="radio" id="popularity" name="popularity" value="popularity">
+            <input type="radio" id="popularity" name="form" value="popularity">
             <label for="year">Popularity</label><br>
-            <input type="radio" id="less-popular" name="less_popular" value="less_popular">
+            <input type="radio" id="less-popular" name="popularity" value="less">
             <label for="year">Less</label>
             <input type="text" name="max-pop"/><br>
-            <input type="radio" id="greater-popular" name="more_popular" value="more_popular">
+            <input type="radio" id="greater-popular" name="popularity" value="more">
             <label for="year">Greater</label>
             <input type="text" name="min-pop"/><br>
             <input type="submit" value="Search" />

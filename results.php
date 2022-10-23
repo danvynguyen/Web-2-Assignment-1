@@ -2,44 +2,50 @@
 require_once('includes/config.inc.php');
 require_once('includes/helpers.inc.php');
 
+session_start();
+
 try {
-   /*$pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
-   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);*/
-    //insert code here.
     $conn = DatabaseHelper::createConnection(array(DBCONNSTRING, DBUSER, DBPASS));
     $gateway = new somethingStupid($conn);
     
-    $find=$gateway->search($_POST['artist'],"artist_name");
-    //$find=$gateway->searchYear($_POST['less_year'],"year");
+    if (isset($_POST['form'])){
+        if ($_POST['form']=="title"){
+        $result=$gateway->search($_POST['title'],"title");
+        }    
+        else if ($_POST['form']=="artist_name"){
+        $result=$gateway->search($_POST['artist'],"artist_name");
+        }
+        else if ($_POST['form']=="genre_name"){
+        $result=$gateway->search($_POST['genre'],"genre_name");
+        }
+        else if ($_POST['form']=="year"){
+            if ($_POST['year']=="less"){
+            $result=$gateway->searchLess($_POST['year'],"year");
+        }
+        else if ($_POST['year']=="greater"){
+            $result=$gateway->searchGreater($_POST['year'],"year");
+            }
+        }       
+        else if ($_POST['form']=="popularity"){
+            if ($_POST['popularity']=="less"){
+                $result=$gateway->searchLess($_POST['popularity'],"popularity");
+            }
+            else if ($_POST['popularity']=="more"){
+                $result=$gateway->searchGreater($_POST['popularity'],"popularity");
+            }
+        }
+    }
+    if (isset($_POST['title'])){
+        $song_id=$gateway->findSongID($_POST['title']);
+    }
     
-    
-   /*if (isset($_POST["title"]) && isset($_POST["artist"]) && isset($_POST["less_year"]) && isset($_POST["greater_year"]) && isset($_POST["genre"]) && isset($_POST["less_popular"]) && isset($_POST["more popular"])){
-       //$results=findSongs($_POST["title"],$_POST["artist"],$_POST["less_year"],$_POST["greater_year"],$_POST["genre"],$_POST["less_popular"],$_POST["more_popular"]);
-       $results=findSongs();
-       
-   }*/ 
    $pdo = null;
 }
 catch (PDOException $e) {
    die( $e->getMessage() );
 } 
 
-// function to find song
-/*function findSongs($title,$artist,$less_year,$greater_year,$genre,$less_popular,$more_popular) {  
-        $sql = "SELECT song_id, title, artist_name, year, genre_name, popularity FROM artists INNER JOIN songs ON artists.artist_id=songs.artist_id INNER JOIN genres ON genres.genre_id=songs.genre_id"; 
-        $sql .= " WHERE title LIKE '%$title%'";
-        $sql .= " OR artist_name LIKE '%$artist%'";
-        $sql .= " OR year < '%$less_year%'";
-        $sql .= " OR year > '%$greater_year%'";
-        $sql .= " OR genre_name LIKE '%$genre%'";
-        $sql .= " OR year < '%$less_popular%'";
-        $sql .= " OR year > '%$more_popular%'"; 
-        
-        $statement = $pdo->prepare($sql);    
-        $statement->execute( array("song_id"=>$song_id,"title"=>$title,"artist"=>$artist,"less_year"=>$less_year,"greater_year"=>$greater_year,"genre"=>$genre,"less_popular"=>$less_popular,"more_popular"=>$more_popular)); 
-        return $statement->fetchAll();  
-     
-}*/
+$_SESSION['favorites']=array();
 
 ?>
 
@@ -70,10 +76,12 @@ catch (PDOException $e) {
                 <th>Year</th>
                 <th>Genre</th>
                 <th>Popularity</th>
+                <th></th>
+                <th></th>
             </tr>
             <?php
-            if (isset($find) && count($find)>0) {
-                foreach( $find as $r ) {
+            if (isset($result) && count($result)>0) {
+                foreach( $result as $r ) {
                     echo '<tr>';
                     echo '<td>';
                     echo $r['title'];
@@ -88,7 +96,17 @@ catch (PDOException $e) {
                     echo $r['genre_name'];
                     echo '</td>';
                     echo '<td>';
-                    echo $r['popularity'];
+                    echo '<progress value="'.$r['popularity'].'" max="100"></progress>';
+                    echo '</td>';
+                    echo '<td>';
+                    foreach ($song_id as $id){
+                        //echo '<button type="button"><a href="single-song.php?song_id='.$id['song_id'].'">View</a></button>';
+                        echo $id['song_id'];
+                    }
+                    echo '</td>';
+                    echo '<td>';
+                    echo '<button type="button"><a href="favorites.php?song_id=">Add to Favorites</a></button>';
+                    array_push($_SESSION['favorites'],array("title"=>$r['title'],"artist_name"=>$r['artist_name'],"year"=>$r['year'],"genre_name"=>$r['genre_name'],"popularity"=>$r['popularity']));
                     echo '</td>';
                     echo '</tr>';
                 }
@@ -103,11 +121,13 @@ catch (PDOException $e) {
             ?>
         </table>
         
-        <form action="favorites.php" method="post">
+        <!--<form action="favorites.php" method="post">
         <button type="button">Show All</button>
         <input type="submit" value="Add to Favorites" />
-        <!--<button type="button"><a href='"single-song.php?song_id='.$POST["song_id"].'"'>View</a></button>-->
-        </form>
+        <?php 
+        //echo '<button type="button"><a href="single-song.php?song_id='.$_POST['song_id'].'>View</a></button>';
+        ?>
+        </form>-->
         
     </section>
 
