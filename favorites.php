@@ -17,15 +17,16 @@ try {
         //add song to $_SESSION['favorites']
         if (isset($_GET['song_id']) && ($_GET['button']=="Add to Favorites")) {
             
-            $songs=$gateway->search($_GET['song_id'],"song_id");
-            foreach ($songs as $s) {
-                array_push($_SESSION['favorites'],array("song_id"=>$s['song_id']));
+            //$songs=$gateway->search($_GET['song_id'],"song_id");
+            if(!in_array($_GET['song_id'],$_SESSION['favorites'])) {
+                array_push($_SESSION['favorites'],$_GET['song_id']);
             }
         }
         //removes song from $_SESSION['favorites']
         else if (isset($_GET['song_id']) && ($_GET['button']=="Remove")){
-            $key = array_search($_GET['song_id'], $_SESSION['favorites']);
-            unset($_SESSION['favorites'][$key]);
+            //$key = array_search($_GET['song_id'], $_SESSION['favorites']);
+            //unset($_SESSION['favorites'][$key]);
+            $_SESSION['favorites']=array_diff($_SESSION['favorites'], [$_GET['song_id']]); 
         }
         //removes all songs from $_SESSION['favorites']
         else {
@@ -79,7 +80,7 @@ catch (PDOException $e) {
                 
                 foreach( $_SESSION['favorites'] as $f ) {
                     
-                    $songs=$gateway->search($f['song_id'],"song_id");
+                    $songs=$gateway->search($f,"song_id");
                         
                         foreach ($songs as $s) {
                             echo '<tr>';
