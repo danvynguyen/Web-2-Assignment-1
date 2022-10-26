@@ -36,10 +36,6 @@ try {
             }
         }
     }
-    /*if (isset($_GET['title'])){
-        $song_id=$gateway->findSongID($_GET['title']);
-        $_SESSION['song_id']=$song_id;
-    }*/
     
    $pdo = null;
 }
@@ -61,7 +57,6 @@ catch (PDOException $e) {
 </head>
 <body>
 <header>
-    <!--<h1 class="center">COMP 3512 Assign1</h1>-->
     <h1 class="center">McDeezers</h1>
     <nav class="center">
         <a href="home.php">Home</a> |
@@ -107,18 +102,7 @@ catch (PDOException $e) {
                     echo '<input type="button" onclick="location=\'single-song.php?song_id='.$r['song_id'].'\'" value="View">';
                     echo '<input type="button" onclick="location=\'favorites.php?song_id='.$r['song_id'].'&button=Add+to+Favorites\'" name="button" value="Add to Favorites">';
                     echo '<input type="button" onclick="location=\'results.php?song_id='.$r['song_id'].'\'" value="Show All">';
-                    echo '</form>'; 
-                    
-                    /*if (isset($_GET['button1'])){
-                        if ($_GET['button1']=='Add To Favorites'){
-                            array_push($_SESSION['favorites'],array("song_id"=>$r['song_id'],"title"=>$r['title'],"artist_name"=>$r['artist_name'],"year"=>$r['year'],"genre_name"=>$r['genre_name'],"popularity"=>$r['popularity']));
-                        }
-                    }*/
-                    
-                    /*if(array_key_exists('button1', $_GET)) {
-                        array_push($_SESSION['favorites'],array("title"=>$r['title'],"artist_name"=>$r['artist_name'],"year"=>$r['year'],"genre_name"=>$r['genre_name'],"popularity"=>$r['popularity']));
-                    }*/
-                    
+                    echo '</form>';
                     echo '</td>';
                     echo '<td>';
                     echo '</td>';

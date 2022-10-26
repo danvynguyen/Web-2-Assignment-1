@@ -56,12 +56,6 @@ class songDB {
         $statement = DatabaseHelper::runQuery($this->pdo, $sql, null);
         return $statement->fetchAll();
     }
-    
-    /*public function callSongIDs(){
-        $sql = "SELECT song_id FROM songs";
-        $statement = DatabaseHelper::runQuery($this->pdo, $sql, null);
-        return $statement->fetchAll();
-    }*/
 
     public function getAll() { 
         $sql = self::$baseSQL; 

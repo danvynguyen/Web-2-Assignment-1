@@ -15,17 +15,19 @@ try {
         }
     
         //add song to $_SESSION['favorites']
-        if (isset($_GET['song_id']) && $_GET['button']=="Add to Favorites") {
+        if (isset($_GET['song_id']) && ($_GET['button']=="Add to Favorites")) {
             
             $songs=$gateway->search($_GET['song_id'],"song_id");
             foreach ($songs as $s) {
-                array_push($_SESSION['favorites'],array("song_id"=>$s['song_id'],"title"=>$s['title'],"artist_name"=>$s['artist_name'],"year"=>$s['year'],"genre_name"=>$s['genre_name'],"popularity"=>$s['popularity']));
+                //array_push($_SESSION['favorites'],array("song_id"=>$s['song_id'],"title"=>$s['title'],"artist_name"=>$s['artist_name'],"year"=>$s['year'],"genre_name"=>$s['genre_name'],"popularity"=>$s['popularity']));
+                array_push($_SESSION['favorites'],array("song_id"=>$s['song_id']));
             }
         }
         //removes song from $_SESSION['favorites']
-        else if (isset($_GET['song_id']) && $_GET['button'] == "Remove"){
+        else if (isset($_GET['song_id']) && ($_GET['button']=="Remove")){
             $key = array_search($_GET['song_id'], $_SESSION['favorites']);
             unset($_SESSION['favorites'][$key]);
+            //$_SESSION['favorites']= array_push($_SESSION['favorites'],array("song_id"=>$s['song_id']));
         }
         //removes all songs from $_SESSION['favorites']
         else {
@@ -36,17 +38,6 @@ try {
                 }
             }
         }
-    
-        /*if (isset($_GET['song_id']) && $_GET["button1"] == 'Add to Favorites') {
-            $song_id = $_GET['song_id'];
-
-            array_push($_SESSION['favorites'], $song_id);
-        } 
-        else if (isset($_GET['song_id']) && $_GET["button2"] == 'Remove'){
-            $key = array_search($_GET['song_id'], $_SESSION['favorites']);
-
-            unset($_SESSION['song_ids'][$key]);
-        }*/
     
 }
 catch (PDOException $e) {
@@ -93,6 +84,7 @@ catch (PDOException $e) {
                 foreach( $_SESSION['favorites'] as $f ) {
                     
                     $songs=$gateway->search($f['song_id'],"song_id");
+                    //echo $f['song_id'];
                         
                         foreach ($songs as $s) {
                             echo '<tr>';
@@ -115,7 +107,7 @@ catch (PDOException $e) {
                             echo '<form action="favorites.php" method="get">';
                             echo '<input type="button" onclick="location=\'single-song.php?song_id='.$s['song_id'].'\'" value="View">';
                             echo '<input type="button" onclick="location=\'favorites.php?song_id='.$s['song_id'].'&button=Remove\'" name="button" value="Remove">';
-                            echo '<input type="button" onclick="location=\'favorites.php\'" name="button2" value="Remove All">';
+                            echo '<input type="button" onclick="location=\'favorites.php\'" name="button" value="Remove All">';
                             echo '</form>';               
                             echo '</td>';
                             echo '<td>';

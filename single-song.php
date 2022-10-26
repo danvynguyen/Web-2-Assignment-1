@@ -45,7 +45,6 @@ function getSongs($pdo, $id){
     </nav>
 </header>
 <main>
-    <!--<p class="center">title, artist name, artist type, genre, year, duration</p>-->
     <?php 
     echo '<h1 class="center">'.$songs['title'].' by '.$songs['artist_name'].'</h1>';
     echo '<p class="center">'.$songs['title'].', '.$songs['artist_name'].' ('.$songs['type_name'].'), '.$songs['year'].', '.$songs['duration'].' seconds'.'</p>'; 
