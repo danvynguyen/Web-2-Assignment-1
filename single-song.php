@@ -84,7 +84,7 @@ function getSongs($pdo, $id){
 </main>
 <footer>
     
-    <div class="center">&copy 2021 danvynguyen comp3512</div>
+    <div class="center">&copy 2022 copyright danvynguyen</div>
 </footer>    
 
 </body>

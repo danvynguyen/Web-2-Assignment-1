@@ -43,8 +43,6 @@ catch (PDOException $e) {
    die( $e->getMessage() );
 } 
 
-//$_SESSION['favorites']=array();
-
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +111,6 @@ catch (PDOException $e) {
                 echo "<p>No results for '".$_GET['title']."' found.</p>";
             }
             else {
-                //echo "<p> No results found. </p>";
                 
                 foreach( $songs as $r ) {
                     echo '<tr>';
@@ -142,13 +139,12 @@ catch (PDOException $e) {
             }
             ?>
         </table>
-        <!--<input type="button" onclick="location='href?song_id=[]'">-->
     </section>
 
 </main>
 <footer>
     
-    <div class="center">&copy 2021 danvynguyen comp3512</div>
+    <div class="center">&copy 2022 copyright danvynguyen</div>
 </footer>    
 
 </body>

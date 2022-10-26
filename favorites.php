@@ -4,7 +4,7 @@ require_once('includes/config.inc.php');
 require_once('includes/helpers.inc.php');
 
 session_start();
-print_r($_SESSION);
+//print_r($_SESSION);
 
 try { 
     $conn = DatabaseHelper::createConnection(array(DBCONNSTRING, DBUSER, DBPASS));
@@ -19,7 +19,6 @@ try {
             
             $songs=$gateway->search($_GET['song_id'],"song_id");
             foreach ($songs as $s) {
-                //array_push($_SESSION['favorites'],array("song_id"=>$s['song_id'],"title"=>$s['title'],"artist_name"=>$s['artist_name'],"year"=>$s['year'],"genre_name"=>$s['genre_name'],"popularity"=>$s['popularity']));
                 array_push($_SESSION['favorites'],array("song_id"=>$s['song_id']));
             }
         }
@@ -27,13 +26,11 @@ try {
         else if (isset($_GET['song_id']) && ($_GET['button']=="Remove")){
             $key = array_search($_GET['song_id'], $_SESSION['favorites']);
             unset($_SESSION['favorites'][$key]);
-            //$_SESSION['favorites']= array_push($_SESSION['favorites'],array("song_id"=>$s['song_id']));
         }
         //removes all songs from $_SESSION['favorites']
         else {
             if (! empty($_SESSION['favorites']) ) {
                 foreach ($_SESSION['favorites'] as $f) {
-                //$_SESSION['favorites']= array_diff(array("song_id"=>$f['song_id'],"title"=>$f['title'],"artist_name"=>$f['artist_name'],"year"=>$f['year'],"genre_name"=>$f['genre_name'],"popularity"=>$f['popularity']));
                     unset($_SESSION['favorites']);
                 }
             }
@@ -78,13 +75,11 @@ catch (PDOException $e) {
                 <th></th>
             </tr>
             <?php
-            //if (isset($songs) && count($songs)>0) {
             if (isset($_SESSION['favorites'])){
                 
                 foreach( $_SESSION['favorites'] as $f ) {
                     
                     $songs=$gateway->search($f['song_id'],"song_id");
-                    //echo $f['song_id'];
                         
                         foreach ($songs as $s) {
                             echo '<tr>';

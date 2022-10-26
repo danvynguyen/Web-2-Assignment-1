@@ -10,8 +10,6 @@ try {
     $song=$gateway->getAll();
     $artists=$gateway->callArtist();
     $genres=$gateway->callGenre();
-    //$songIDs=$gateway->callSongIDs();
-    //$find=$gateway->search(1002,"song_id");
 }
 catch (Exception $e){
     die($e->getMessage());
@@ -88,7 +86,7 @@ catch (Exception $e){
 </main>
 <footer>
     
-    <div class="center">&copy 2021 danvynguyen comp3512</div>
+    <div class="center">&copy 2022 copyright danvynguyen</div>
 </footer>    
 
 </body>
