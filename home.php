@@ -1,5 +1,8 @@
 <?php 
 require_once('includes/config.inc.php');
+
+session_start();
+
 try { 
     $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS); 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
@@ -169,56 +172,57 @@ function outputStudying($studying) {
 <head>
     <title>Assignment 1</title>
     <meta charset=utf-8>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Proxima Nova">
     <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 <header>
-    <h1 class="center">COMP 3512 Assign1</h1>
+    <h1 class="center">McDeezers</h1>
     <nav class="center">
         <a href="home.php">Home</a> |
         <a href="search.php">Search</a> |
-        <a href="favorites.php">Favorites</a> |
+        <a href="results.php">Songs</a> |
+        <a href="favorites.php">Favorites</a>
     </nav>
 </header>
 <main>
     <?php 
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3> Top Genres </div>";
         outputTopGenres($topGenres);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>Top Artists</h3>";
         outputTopArtists($topArtists);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>Most Popular Songs</h3>";
         outputMostPopular($mostPopular);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>One Hit Wonders</h3>";
         outputOneHitWonders($oneHitWonders);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>Longest Acoustic Songs</h3>";
         outputLongestAcoustic($longestAcoustic);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>At the Club</h3>";
         outputClub($club);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>Running Songs</h3>";
         outputRunning($running);
         echo '</div>';
     
-        echo '<div class="">';
+        echo '<div class="list">';
         echo "<h3>Studying</h3>";
         outputStudying($studying);
         echo '</div>';

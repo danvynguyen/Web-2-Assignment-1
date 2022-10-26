@@ -1,6 +1,8 @@
 <?php 
 require_once('includes/config.inc.php');
 
+session_start();
+
 try {
     $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS); 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -29,16 +31,17 @@ function getSongs($pdo, $id){
 <head>
     <title>Assignment 1</title>
     <meta charset=utf-8>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Proxima Nova">
     <link rel="stylesheet" href="css/single-song.css">
 </head>
 <body>
 <header>
-    <h1 class="center">COMP 3512 Assign1</h1>
+    <h1 class="center">McDeezers</h1>
     <nav class="center">
         <a href="home.php">Home</a> |
         <a href="search.php">Search</a> |
-        <a href="favorites.php">Favorites</a> |
+        <a href="results.php">Songs</a> |
+        <a href="favorites.php">Favorites</a>
     </nav>
 </header>
 <main>
@@ -56,25 +59,25 @@ function getSongs($pdo, $id){
                     <?php echo $songs['bpm'];?>
                 </li>
                 <li>Energy:    
-                    <?php echo '<progress value="'.$songs['energy'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="energy" value="'.$songs['energy'].'" max="100"></progress>';?>
                 </li>
                 <li>Danceability: 
-                    <?php echo '<progress value="'.$songs['danceability'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="danceability" value="'.$songs['danceability'].'" max="100"></progress>';?>
                 </li>
                 <li>Liveness: 
-                    <?php echo '<progress value="'.$songs['liveness'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="liveness" value="'.$songs['liveness'].'" max="100"></progress>';?>
                 </li>
                 <li>Valence: 
-                    <?php echo '<progress value="'.$songs['valence'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="valence" value="'.$songs['valence'].'" max="100"></progress>';?>
                 </li>
                 <li>Acoustics:
-                    <?php echo '<progress value="'.$songs['acousticness'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="acoustics" value="'.$songs['acousticness'].'" max="100"></progress>';?>
                 </li>
                 <li>Speechiness: 
-                    <?php echo '<progress value="'.$songs['speechiness'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="speechiness" value="'.$songs['speechiness'].'" max="100"></progress>';?>
                 </li>
                 <li>Popularity: 
-                    <?php echo '<progress value="'.$songs['popularity'].'" max="100"></progress>';?>
+                    <?php echo '<progress class="popularity" value="'.$songs['popularity'].'" max="100"></progress>';?>
                 </li>
             </ul>
     </section>

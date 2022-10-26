@@ -38,7 +38,7 @@ public static function runQuery($connection, $sql, $parameters) {
     } 
 }
 
-class somethingStupid {
+class songDB {
     private static $baseSQL = "SELECT * FROM songs NATURAL JOIN artists NATURAL JOIN genres INNER JOIN Types ON artists.artist_type_id = types.type_id ";
 
     public function __construct($connection) {
@@ -77,26 +77,32 @@ class somethingStupid {
         return $statement->fetchAll(); 
     }
 
-    public function searchLess($find, $column) { 
-        $sql = self::$baseSQL."WHERE ".$column."<?"; 
+    public function searchLess(int $find, $column) { 
+        $sql = self::$baseSQL."WHERE ".$column."<? ORDER BY year DESC"; 
         $statement = 
             DatabaseHelper::runQuery($this->pdo, $sql, array($find)); 
         return $statement->fetchAll(); 
     }
-    public function searchGreater($find, $column) { 
-        $sql = self::$baseSQL."WHERE ".$column.">?"; 
+    public function searchGreater(int $find, $column) { 
+        $sql = self::$baseSQL."WHERE ".$column.">? ORDER BY year DESC"; 
         $statement = 
             DatabaseHelper::runQuery($this->pdo, $sql, array($find)); 
         return $statement->fetchAll(); 
     }
     
     public function findSongID($title) {
-        $sql = "SELECT song_id FROM songs WHERE title=?";
+        $sql = "SELECT song_id FROM songs WHERE title==?";
         $statement = 
             DatabaseHelper::runQuery($this->pdo, $sql, array($title)); 
         return $statement->fetchAll(); 
     }
     
+}
+
+function addToFavorites($array) {
+    array_push($array,array("title"=>$r['title'],"artist_name"=>$r['artist_name'],"year"=>$r['year'],"genre_name"=>$r['genre_name'],"popularity"=>$r['popularity']));
+    
+    echo 'Song added to Favorites!';
 }
 
 ?>

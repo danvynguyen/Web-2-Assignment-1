@@ -4,64 +4,54 @@ require_once('includes/config.inc.php');
 require_once('includes/helpers.inc.php');
 
 session_start();
+print_r($_SESSION);
 
-try {
-   $pdo = new PDO(DBCONNSTRING,DBUSER,DBPASS);
-   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+try { 
+    $conn = DatabaseHelper::createConnection(array(DBCONNSTRING, DBUSER, DBPASS));
+    $gateway = new songDB($conn);
+    
+        if (!isset($_SESSION['favorites'])) {
+            $_SESSION['favorites']=array();
+        }
+    
+        //add song to $_SESSION['favorites']
+        if (isset($_GET['song_id']) && $_GET['button']=="Add to Favorites") {
+            
+            $songs=$gateway->search($_GET['song_id'],"song_id");
+            foreach ($songs as $s) {
+                array_push($_SESSION['favorites'],array("song_id"=>$s['song_id'],"title"=>$s['title'],"artist_name"=>$s['artist_name'],"year"=>$s['year'],"genre_name"=>$s['genre_name'],"popularity"=>$s['popularity']));
+            }
+        }
+        //removes song from $_SESSION['favorites']
+        else if (isset($_GET['song_id']) && $_GET['button'] == "Remove"){
+            $key = array_search($_GET['song_id'], $_SESSION['favorites']);
+            unset($_SESSION['favorites'][$key]);
+        }
+        //removes all songs from $_SESSION['favorites']
+        else {
+            if (! empty($_SESSION['favorites']) ) {
+                foreach ($_SESSION['favorites'] as $f) {
+                //$_SESSION['favorites']= array_diff(array("song_id"=>$f['song_id'],"title"=>$f['title'],"artist_name"=>$f['artist_name'],"year"=>$f['year'],"genre_name"=>$f['genre_name'],"popularity"=>$f['popularity']));
+                    unset($_SESSION['favorites']);
+                }
+            }
+        }
+    
+        /*if (isset($_GET['song_id']) && $_GET["button1"] == 'Add to Favorites') {
+            $song_id = $_GET['song_id'];
 
-    //$favorites = getFavorites($pdo);
-    //$result=$pdo->createFavorites($pdo);
-    //$results = getFavorites($pdo);
-   $pdo = null;
+            array_push($_SESSION['favorites'], $song_id);
+        } 
+        else if (isset($_GET['song_id']) && $_GET["button2"] == 'Remove'){
+            $key = array_search($_GET['song_id'], $_SESSION['favorites']);
+
+            unset($_SESSION['song_ids'][$key]);
+        }*/
+    
 }
 catch (PDOException $e) {
    die( $e->getMessage() );
 } 
-
-//gets all songs from favorites table
-/*function getFavorites($pdo) {
-   $sql = "SELECT * FROM favorites";
-   $result = $pdo->query($sql);
-   return $result->fetchAll(PDO::FETCH_ASSOC); 
-}
-
-// removes a song from favorites list
-function removeFavorite($song_id,$pdo) {
-    $sql = "DELETE * FROM favorites WHERE song_id=?";
-    $statement = $pdo->prepare($sql); 
-    $statement->bindValue(1, $song_id); 
-    $statement->execute(); 
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-
-// removes all songs from favorites list
-function removeAllFavorites($pdo) {
-    $sql = "DELETE * FROM favorites";
-    $result = $pdo->query($sql);
-    return $result->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function createFavorites($pdo){
-    $sql = "DROP TABLE IF EXISTS favorites;
-    CREATE TABLE favorites (
-    song_id INTEGER PRIMARY KEY, 
-    title TEXT, 
-    artist_name TEXT,  
-    year INTEGER,
-    genre_name TEXT,     
-    popularity INTEGER
-);
-
-INSERT INTO favorites (song_id, title, artist_name, year, genre_name, popularity) VALUES (1000, 'Never Gonna Give You Up', 'Rick Astley', 1987, 'pop', 100);
-
-SELECT * FROM favorites";
-
-    $result = $pdo->query($sql);
-    //return $result->fetchAll(PDO::FETCH_ASSOC);
-    while ($row=$result->fetch()){
-        echo $row['title'];
-    }
-}*/
 
 ?>
 
@@ -70,16 +60,17 @@ SELECT * FROM favorites";
 <head>
     <title>Assignment 1</title>
     <meta charset=utf-8>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Proxima Nova">
     <link rel="stylesheet" href="css/results.css">
 </head>
 <body>
 <header>
-    <h1 class="center">COMP 3512 Assign1</h1>
+    <h1 class="center">McDeezers</h1>
     <nav class="center">
         <a href="home.php">Home</a> |
         <a href="search.php">Search</a> |
-        <a href="favorites.php">Favorites</a> |
+        <a href="results.php">Songs</a> |
+        <a href="favorites.php">Favorites</a>
     </nav>
 </header>
 <main>
@@ -92,39 +83,57 @@ SELECT * FROM favorites";
                 <th>Year</th>
                 <th>Genre</th>
                 <th>Popularity</th>
+                <th></th>
+                <th></th>
             </tr>
             <?php
+            //if (isset($songs) && count($songs)>0) {
+            if (isset($_SESSION['favorites'])){
+                
                 foreach( $_SESSION['favorites'] as $f ) {
-                    echo '<tr>';
-                    echo '<td>';
-                    echo $f['title'];
-                    echo '</td>';
-                    echo '<td>';
-                    echo $f['artist_name'];
-                    echo '</td>';
-                    echo '<td>';
-                    echo $f['year'];
-                    echo '</td>';
-                    echo '<td>';
-                    echo $f['genre_name'];
-                    echo '</td>';
-                    echo '<td>';
-                    echo '<progress value="'.$f['popularity'].'" max="100"></progress>';
-                    echo '</td>';
-                    echo '</tr>';
+                    
+                    $songs=$gateway->search($f['song_id'],"song_id");
+                        
+                        foreach ($songs as $s) {
+                            echo '<tr>';
+                            echo '<td>';
+                            echo $s['title'];
+                            echo '</td>';
+                            echo '<td>';
+                            echo $s['artist_name'];
+                            echo '</td>';
+                            echo '<td>';
+                            echo $s['year'];
+                            echo '</td>';
+                            echo '<td>';
+                            echo $s['genre_name'];
+                            echo '</td>';
+                            echo '<td>';
+                            echo '<progress value="'.$s['popularity'].'" max="100"></progress>';
+                            echo '</td>';
+                            echo '<td>';
+                            echo '<form action="favorites.php" method="get">';
+                            echo '<input type="button" onclick="location=\'single-song.php?song_id='.$s['song_id'].'\'" value="View">';
+                            echo '<input type="button" onclick="location=\'favorites.php?song_id='.$s['song_id'].'&button=Remove\'" name="button" value="Remove">';
+                            echo '<input type="button" onclick="location=\'favorites.php\'" name="button2" value="Remove All">';
+                            echo '</form>';               
+                            echo '</td>';
+                            echo '<td>';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                    }
                 }
+                
             ?>
         </table>
         
-        <button type="button">Remove All</button>
-        <button type="button">Remove</button>
-        <button type="button">View</button>
     </section>
     
 </main>
 <footer>
     
-    <div>&copy 2021 danvynguyen comp3512</div>
+    <div class="center">&copy 2022 copyright danvynguyen</div>
 </footer>    
 
 </body>

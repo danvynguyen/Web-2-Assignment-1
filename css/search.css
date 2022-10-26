@@ -4,5 +4,23 @@
 
 a {
     text-decoration: none;
-    color: black;
+    color: white;
+}
+
+body {
+    font-family: 'Proxima Nova', sans-serif;
+    background-image: linear-gradient(purple, black);
+    height: 100vh;
+    color: white;
+}
+
+.song-search, td {
+    margin-left: 37.4%;
+    /*background-color: black;*/
+    padding: 20px;
+    width: 22%;
+}
+
+.title {
+    margin-left: 20px;
 }

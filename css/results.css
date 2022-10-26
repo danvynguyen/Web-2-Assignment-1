@@ -8,15 +8,30 @@ h3 {
 
 a {
     text-decoration: none;
-    color: black;
-}
-
-td {
-    text-align: center;
+    color: white;
 }
 
 body {
-  font-family: Roboto, Times, sans-serif;
+    font-family: 'Proxima Nova', sans-serif;
     background-image: linear-gradient(purple, black);
+    /*background-color: black;*/
     color: white;
+    height: 100vh;
+}
+
+button {
+    background-color: limegreen;
+}
+
+.song-results {
+    text-align: center;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td,tr {
+    padding: 5px;
 }
